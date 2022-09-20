@@ -1,29 +1,44 @@
-import twitterLogo from './assets/twitter-logo.svg';
-import './App.css';
+//IMPORTS
+import React, { useEffect, useState } from "react";
+import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
+import { Program, Provider, web3 } from "@project-serum/anchor";
+import toast, { Toaster } from "react-hot-toast";
+import "./App.css";
 
-// Constants
-const TWITTER_HANDLE = '_buildspace';
-const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
+//CONSTANTS
 
 const App = () => {
+  //useSTATE
+
+  //TOASTS
+
+  //ACTIONS
+  const renderNotConnectedContainer = () => (
+    <div className="container">
+      <p className="header">Scene Portal</p>
+      <p className="sub-header">Your favorite scenes, on the blockchain</p>
+      <div className="moon" />
+      <div className="kiki" />
+    </div>
+  );
+
+  //useEFFECTS
+
   return (
     <div className="App">
       <div className="container">
-        <div className="header-container">
-          <p className="header">🖼 GIF Portal</p>
-          <p className="sub-text">
-            View your GIF collection in the metaverse ✨
-          </p>
-        </div>
-        <div className="footer-container">
-          <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
-          <a
-            className="footer-text"
-            href={TWITTER_LINK}
-            target="_blank"
-            rel="noreferrer"
-          >{`built on @${TWITTER_HANDLE}`}</a>
-        </div>
+        <Toaster
+          toastOptions={{
+            className: "",
+            duration: 3000,
+            style: {
+              border: "1px solid #713200",
+              padding: "16px",
+              color: "#713200",
+            },
+          }}
+        />
+        <div className="header-container">{renderNotConnectedContainer()}</div>
       </div>
     </div>
   );

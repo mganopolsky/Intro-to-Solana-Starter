@@ -171,14 +171,14 @@ const App = () => {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
 
-      /*
+      
       await program.rpc.clearGifs({
         accounts: {
           baseAccount: baseAccount.publicKey,
           user: provider.wallet.publicKey,
         },
       });
-      */
+      
       console.log("Gifs cleared");
 
       await getGifList();

@@ -93,6 +93,15 @@
   font-size: 1rem;
 }
 
+.clear-gif-button {
+  background-color: #9c8daf;
+  background-size: 200% 200%;
+  margin-left: 10px;
+  font-family: "Permanent Marker", cursive;
+  font-size: 1rem;
+  color: #360477;
+}
+
 .gif-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));

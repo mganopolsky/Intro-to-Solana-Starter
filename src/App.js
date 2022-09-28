@@ -31,6 +31,7 @@ const App = () => {
   const showConnectedWalletToast = () => toast.success("You're signed in!");
   const showDisconnectedWalletToast = () => toast.success("You've signed out!");
   const showGifSentToast = () => toast.success("GIF Sent!");
+  const showGifsClearedToast = () => toast.success("GIFs Cleared!");
 
   //ACTIONS
 
@@ -165,6 +166,28 @@ const App = () => {
     }
   };
 
+  const clearGifs = async () => {
+    try {
+      const provider = getProvider();
+      const program = new Program(idl, programID, provider);
+
+      /*
+      await program.rpc.clearGifs({
+        accounts: {
+          baseAccount: baseAccount.publicKey,
+          user: provider.wallet.publicKey,
+        },
+      });
+      */
+      console.log("Gifs cleared");
+
+      await getGifList();
+      showGifsClearedToast();
+    } catch (error) {
+      console.log("Error sending GIF:", error);
+    }
+  };
+
   const renderNotConnectedContainer = () => (
     <div className="container">
       <button
@@ -221,6 +244,9 @@ const App = () => {
             />
             <button type="submit" className="cta-button submit-gif-button">
               Submit
+            </button>
+            <button className="cta-button clear-gif-button" onClick={clearGifs}>
+              CLEAR GIFS
             </button>
           </form>
           <div className="gif-grid">

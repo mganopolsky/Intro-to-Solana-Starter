@@ -144,6 +144,10 @@
   height: 50px;
 }
 
+.connected-container {
+  height: auto;
+}
+
 .address-tag {
   display: inline-flex;
   align-items: center;

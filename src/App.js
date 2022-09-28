@@ -133,14 +133,35 @@ const App = () => {
     }
   };
 
+  const shortenAddress = (address) => {
+    if (!address) return "";
+    return address.substring(0, 4) + "....." + address.substring(40);
+  };
+
   const sendGif = async () => {
-    if (inputValue.length > 0) {
-      console.log("Gif link:", inputValue);
-      setGifList([...gifList, inputValue]);
-      setInputValue("");
+    if (inputValue.length === 0) {
+      console.log("No gif link given!");
+      return;
+    }
+    setInputValue("");
+    console.log("Gif Link", inputValue);
+
+    try {
+      const provider = getProvider();
+      const program = new Program(idl, programID, provider);
+
+      await program.rpc.addGif(inputValue, {
+        accounts: {
+          baseAccount: baseAccount.publicKey,
+          user: provider.wallet.publicKey,
+        },
+      });
+      console.log("Gif successfully sent to program", inputValue);
+
+      await getGifList();
       showGifSentToast();
-    } else {
-      console.log("Empty input. Try again.");
+    } catch (error) {
+      console.log("Error sending GIF:", error);
     }
   };
 
@@ -183,6 +204,7 @@ const App = () => {
             onClick={disconnectWallet}
           >
             SIGN OUT
+            {shortenAddress(walletAddress)}
           </button>
           <form
             className="form"
@@ -210,6 +232,16 @@ const App = () => {
                   src={item.gifLink}
                   alt={item.gifLink}
                 />
+                <div className="address-tag">
+                  <img
+                    className="phantom-image"
+                    src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,f_auto,q_auto:eco,dpr_1/sqzgmbkggvc1uwgapeuy"
+                    alt="Phantom Wallet"
+                  />
+                  <p className="address">
+                    @{shortenAddress(item.userAddress.toString())}
+                  </p>
+                </div>
               </div>
             ))}
           </div>

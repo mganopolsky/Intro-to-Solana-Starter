@@ -24,6 +24,22 @@
       "args": []
     },
     {
+      "name": "clearGifs",
+      "accounts": [
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "addGif",
       "accounts": [
         {
@@ -40,6 +56,10 @@
       "args": [
         {
           "name": "gifLink",
+          "type": "string"
+        },
+        {
+          "name": "commentText",
           "type": "string"
         }
       ]
@@ -80,6 +100,10 @@
           {
             "name": "userAddress",
             "type": "publicKey"
+          },
+          {
+            "name": "gifComment",
+            "type": "string"
           }
         ]
       }

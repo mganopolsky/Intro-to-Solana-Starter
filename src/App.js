@@ -151,12 +151,16 @@ const App = () => {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
 
-      await program.rpc.addGif(inputValue, {
-        accounts: {
-          baseAccount: baseAccount.publicKey,
-          user: provider.wallet.publicKey,
+      await program.rpc.addGif(
+        inputValue,
+        {
+          accounts: {
+            baseAccount: baseAccount.publicKey,
+            user: provider.wallet.publicKey,
+          },
         },
-      });
+        "comment here"
+      );
       console.log("Gif successfully sent to program", inputValue);
 
       await getGifList();
@@ -171,14 +175,13 @@ const App = () => {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
 
-      
       await program.rpc.clearGifs({
         accounts: {
           baseAccount: baseAccount.publicKey,
           user: provider.wallet.publicKey,
         },
       });
-      
+
       console.log("Gifs cleared");
 
       await getGifList();

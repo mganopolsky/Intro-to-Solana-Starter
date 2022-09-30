@@ -1,5 +1,5 @@
 //IMPORTS
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
 import { Program, Provider, web3 } from "@project-serum/anchor";
 import toast, { Toaster } from "react-hot-toast";
@@ -80,12 +80,12 @@ const App = () => {
     setInputValue(value);
   };
 
-  const getProgram = async () => {
+  const getProgram = useCallback(async () => {
     const idl = await Program.fetchIdl(programID, getProvider());
     return new Program(idl, programID, getProvider());
-  };
+  }, []);
 
-  const getGifList = async () => {
+  const getGifList = useCallback(async () => {
     try {
       const program = await getProgram();
       const account = await program.account.baseAccount.fetch(
@@ -98,7 +98,7 @@ const App = () => {
       console.log("Error in getGifList: ", error);
       setGifList(null);
     }
-  };
+  }, [getProgram]);
 
   const getProvider = () => {
     const connection = new Connection(network, opts.preflightCommitment);
@@ -171,14 +171,13 @@ const App = () => {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
 
-      
       await program.rpc.clearGifs({
         accounts: {
           baseAccount: baseAccount.publicKey,
           user: provider.wallet.publicKey,
         },
       });
-      
+
       console.log("Gifs cleared");
 
       await getGifList();

@@ -24,6 +24,22 @@
       "args": []
     },
     {
+      "name": "clearGifs",
+      "accounts": [
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "addGif",
       "accounts": [
         {
@@ -78,14 +94,15 @@
             "type": "string"
           },
           {
+            "name": "gifComment",
+            "type": "string"
+          },
+          {
             "name": "userAddress",
             "type": "publicKey"
           }
         ]
       }
     }
-  ],
-  "metadata": {
-    "address": "6NthZpToN6MSrbnSir1e8oYioV6Ko1cTSqPip6gXaYiz"
-  }
+  ]
 }

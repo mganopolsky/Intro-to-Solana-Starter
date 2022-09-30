@@ -104,12 +104,20 @@ const App = () => {
   const getGifList = useCallback(async () => {
     try {
       const program = await getProgram();
-      const account = await program.account.baseAccount.fetch(
-        baseAccount.publicKey
-      );
 
-      console.log("Got the account", account);
-      setGifList(account.gifList);
+      if (program.account && program.account.baseAccount) {
+        console.log("account is ", program.account);
+        console.log("baseAccount is ", program.account.baseAccount);
+        console.log("BaseAccount key is ", baseAccount.publicKey);
+        const account = await program.account.baseAccount.fetch(
+          baseAccount.publicKey
+        );
+
+        console.log("Got the account", account);
+        setGifList(account.gifList);
+      } else {
+        console.log("cannot procede: ", program.account);
+      }
     } catch (error) {
       console.log("Error in getGifList: ", error);
       setGifList(null);
@@ -226,9 +234,8 @@ const App = () => {
     else {
       return (
         <div className="connected-container">
-         
-            <img src={logo} alt={"Code Art Logo"} />
-         
+          <img src={logo} alt={"Code Art Logo"} />
+
           <p className="connected-header">Art Gallery</p>
           <button
             className="cta-button disconnect-wallet-button"

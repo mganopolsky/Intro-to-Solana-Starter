@@ -6,9 +6,11 @@ import toast, { Toaster } from "react-hot-toast";
 import "./App.css";
 import idl from "./idl.json";
 import kp from "./keypair.json";
+import codeArtLogo from "./assets/images/CodeArtLogo.svg";
 
 //CONSTANTS
 const { SystemProgram, Keypair } = web3;
+const logo = codeArtLogo;
 const arr = Object.values(kp._keypair.secretKey);
 const secret = new Uint8Array(arr);
 const baseAccount = Keypair.fromSecretKey(secret);
@@ -81,7 +83,7 @@ const App = () => {
           console.log("Phantom wallet found!");
 
           const response = solana.connect({ onlyIfTrusted: true });
-          if (response) {
+          if (response.publicKey) {
             console.log(
               "Connected with Public Key:",
               response.publicKey.toString()
@@ -199,10 +201,10 @@ const App = () => {
       >
         SIGN IN
       </button>
-      <p className="header">Scene Portal</p>
-      <p className="sub-header">Your favorite scenes, on the blockchain</p>
-      <div className="moon" />
-      <div className="kiki" />
+      <div className="code-art-header">
+        <img src={logo} alt={"Code Art Logo"} />
+      </div>
+      <p className="sub-header">Your favorite coded art, on the block chain!</p>
     </div>
   );
 
@@ -224,7 +226,10 @@ const App = () => {
     else {
       return (
         <div className="connected-container">
-          <p className="connected-header">SCENE PORTAL</p>
+         
+            <img src={logo} alt={"Code Art Logo"} />
+         
+          <p className="connected-header">Art Gallery</p>
           <button
             className="cta-button disconnect-wallet-button"
             onClick={disconnectWallet}
@@ -241,7 +246,7 @@ const App = () => {
           >
             <input
               type="text"
-              placeholder="post your favorite film/tv scene"
+              placeholder="post your favorite CodeArt submision"
               value={inputValue}
               onChange={onInputChange}
             />

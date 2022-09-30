@@ -94,15 +94,14 @@
             "type": "string"
           },
           {
-            "name": "gifComment",
-            "type": "string"
-          },
-          {
             "name": "userAddress",
             "type": "publicKey"
           }
         ]
       }
     }
-  ]
+  ],
+  "metadata": {
+    "address": "6NthZpToN6MSrbnSir1e8oYioV6Ko1cTSqPip6gXaYiz"
+  }
 }

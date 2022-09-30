@@ -80,10 +80,20 @@ const App = () => {
     setInputValue(value);
   };
 
+  const getProvider = useCallback(() => {
+    const connection = new Connection(network, opts.preflightCommitment);
+    const provider = new Provider(
+      connection,
+      window.solana,
+      opts.preflightCommitment
+    );
+    return provider;
+  }, []);
+
   const getProgram = useCallback(async () => {
     const idl = await Program.fetchIdl(programID, getProvider());
     return new Program(idl, programID, getProvider());
-  }, []);
+  }, [getProvider]);
 
   const getGifList = useCallback(async () => {
     try {
@@ -99,16 +109,6 @@ const App = () => {
       setGifList(null);
     }
   }, [getProgram]);
-
-  const getProvider = () => {
-    const connection = new Connection(network, opts.preflightCommitment);
-    const provider = new Provider(
-      connection,
-      window.solana,
-      opts.preflightCommitment
-    );
-    return provider;
-  };
 
   const createGifAccount = async () => {
     try {

@@ -57,10 +57,6 @@
         {
           "name": "gifLink",
           "type": "string"
-        },
-        {
-          "name": "commentText",
-          "type": "string"
         }
       ]
     }
@@ -100,10 +96,6 @@
           {
             "name": "userAddress",
             "type": "publicKey"
-          },
-          {
-            "name": "gifComment",
-            "type": "string"
           }
         ]
       }

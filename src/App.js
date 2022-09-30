@@ -1,5 +1,5 @@
 //IMPORTS
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
 import { Program, Provider, web3 } from "@project-serum/anchor";
 import toast, { Toaster } from "react-hot-toast";
@@ -35,29 +35,6 @@ const App = () => {
 
   //ACTIONS
 
-  const checkIfWalletIsConnected = async () => {
-    try {
-      const { solana } = window;
-
-      if (solana) {
-        if (solana.isPhantom) {
-          console.log("Phantom wallet found!");
-
-          const response = await solana.connect({ onlyIfTrusted: true });
-          console.log(
-            "Connected with Public Key:",
-            response.publicKey.toString()
-          );
-          setWalletAddress(response.publicKey.toString());
-        }
-      } else {
-        showPhantomToast();
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const connectWallet = async () => {
     const { solana } = window;
 
@@ -80,12 +57,49 @@ const App = () => {
     setInputValue(value);
   };
 
-  const getProgram = async () => {
+  const getProvider = useCallback(() => {
+    const connection = new Connection(network, opts.preflightCommitment);
+    const provider = new Provider(
+      connection,
+      window.solana,
+      opts.preflightCommitment
+    );
+    return provider;
+  }, []);
+
+  const getProgram = useCallback(async () => {
     const idl = await Program.fetchIdl(programID, getProvider());
     return new Program(idl, programID, getProvider());
-  };
+  }, [getProvider]);
 
-  const getGifList = async () => {
+  const checkIfWalletIsConnected = useCallback(() => {
+    try {
+      const { solana } = window;
+
+      if (solana) {
+        if (solana.isPhantom) {
+          console.log("Phantom wallet found!");
+
+          const response = solana.connect({ onlyIfTrusted: true });
+          if (response) {
+            console.log(
+              "Connected with Public Key:",
+              response.publicKey.toString()
+            );
+            setWalletAddress(response.publicKey.toString());
+          } else {
+            showDisconnectedWalletToast();
+          }
+        }
+      } else {
+        showPhantomToast();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [setWalletAddress]);
+
+  const getGifList = useCallback(async () => {
     try {
       const program = await getProgram();
       const account = await program.account.baseAccount.fetch(
@@ -98,17 +112,7 @@ const App = () => {
       console.log("Error in getGifList: ", error);
       setGifList(null);
     }
-  };
-
-  const getProvider = () => {
-    const connection = new Connection(network, opts.preflightCommitment);
-    const provider = new Provider(
-      connection,
-      window.solana,
-      opts.preflightCommitment
-    );
-    return provider;
-  };
+  }, [getProgram]);
 
   const createGifAccount = async () => {
     try {
@@ -151,16 +155,12 @@ const App = () => {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
 
-      await program.rpc.addGif(
-        inputValue,
-        {
-          accounts: {
-            baseAccount: baseAccount.publicKey,
-            user: provider.wallet.publicKey,
-          },
+      await program.rpc.addGif(inputValue, {
+        accounts: {
+          baseAccount: baseAccount.publicKey,
+          user: provider.wallet.publicKey,
         },
-        "comment here"
-      );
+      });
       console.log("Gif successfully sent to program", inputValue);
 
       await getGifList();

@@ -181,6 +181,7 @@ const App = () => {
   };
 
   const clearGifs = async () => {
+    console.log("current gifs:");
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
@@ -271,7 +272,7 @@ const App = () => {
                 <img
                   className="gif-image"
                   src={item.gifLink}
-                  alt={item.gifLink}
+                  alt={item.commentText}
                 />
                 <div className="address-tag">
                   <img

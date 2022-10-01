@@ -96,6 +96,10 @@
           {
             "name": "userAddress",
             "type": "publicKey"
+          },
+          {
+            "name": "gifDescription",
+            "type": "string"
           }
         ]
       }
